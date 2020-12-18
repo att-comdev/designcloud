@@ -1,0 +1,31 @@
+Installing KubeVirt on Kubernetes
+
+# Pick an upstream version of KubeVirt to install
+$ export VERSION=v0.26.0
+# Deploy the KubeVirt operator
+$ kubectl apply -f https://github.com/kubevirt/kubevirt/releases/download/${VERSION}/kubevirt-operator.yaml
+# Create the KubeVirt CR (instance deployment request)
+$ kubectl apply -f https://github.com/kubevirt/kubevirt/releases/download/${VERSION}/kubevirt-cr.yaml
+# wait until all KubeVirt components is up
+$ kubectl -n kubevirt wait kv kubevirt --for condition=Available
+
+# kubectl get pods -n kubevirt
+
+
+Create service account for Virtdash
+
+# Create service account
+kubectl create serviceaccount virtlet-dash -n default
+
+# Bind ClusterAdmin role to the service account
+
+kubectl create clusterrolebinding virtlet-dash-admin -n default --clusterrole=cluster-admin --serviceaccount=default:virtlet-dash
+
+# Get the secret token with this command
+kubectl get secret $(kubectl get serviceaccount virtlet-dash -o jsonpath="{.secrets[0].name}") -o jsonpath="{.data.token}" | base64 --decode
+
+
+Configure virtletdash
+
+# Update the token with service account token
+TOKEN: ""

@@ -1,0 +1,19 @@
+apiVersion: v1
+kind: Service
+metadata:
+  annotations:
+    metallb.universe.tf/address-pool: {{ rack_no }}
+  name: {{ vm_name }}
+  labels:
+    vm: {{ selector_name }}
+    created-by: {{ login_name }}
+spec:
+  type: LoadBalancer
+  ports:
+  - name: ssh
+    protocol: TCP
+    port: 22
+    targetPort: 22
+  selector:
+    vm: {{ selector_name }}
+    created-by: {{ login_name }}

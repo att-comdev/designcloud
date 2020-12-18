@@ -1,0 +1,23 @@
+apiVersion: networking.k8s.io/v1beta1
+kind: Ingress
+metadata:
+  annotations:
+          #    nginx.ingress.kubernetes.io/auth-tls-secret: "default/dex.example.com.tls"
+  name: virtletdash
+  namespace: default
+spec:
+  ingressClassName: nginx
+  rules:
+  - host: design-cloud.com
+    http:
+      paths:
+      - backend:
+          serviceName: virtlet-dash-virtletdash
+          servicePort: 5000
+        path: /
+        pathType: Prefix
+  # This section is only required if TLS is to be enabled for the Ingress
+  tls:
+  - hosts:
+    - design-cloud.com
+    secretName: dex.example.com.tls

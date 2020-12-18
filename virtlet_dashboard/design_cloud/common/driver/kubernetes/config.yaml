@@ -1,0 +1,26 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: resource-config
+  namespace: default
+data:
+  gs838s: |
+    disk-vcpu-ram= [0,0,0]
+  vk922s: |
+    disk-vcpu-ram= [0,0,0]
+  nh863p: |
+    disk-vcpu-ram= [0,0,0]
+  md980r: |
+    disk-vcpu-ram= [0,0,0]
+  JB654E: |
+    disk-vcpu-ram= [0,0,0]
+  admin: |
+    disk-vcpu-ram= [40,4,4]
+  ae196e: |
+    disk-vcpu-ram= [40,2,4]
+  mj934a: |
+    disk-vcpu-ram= [32,16,24]
+  kp6228: |
+    disk-vcpu-ram= [500,16,32]
+  Total: |
+    disk-vcpu-ram= [8000,375,1800]

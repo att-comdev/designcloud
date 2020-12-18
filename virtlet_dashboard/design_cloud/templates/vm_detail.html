@@ -1,0 +1,141 @@
+
+<!doctype html>
+<html lang="en">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <style type="text/css">
+
+.dropdown-menu.show {
+    display: block;
+    width: 20em;
+    height: 8em;
+}
+
+.user-profile {
+    margin-left: 20px;
+}
+.user-profile > span {
+    padding-left: 10px;
+    font-weight: 400;
+}
+
+#logoutLink {
+
+    text-align: center;
+}
+
+ .round { border-radius: 50%; }
+
+body {
+    background-color: #e9ecef;
+
+}
+.launch-button {
+    margin-right: 60px;
+}
+.pagination {
+    text-align: center;
+    display: inline-flex;
+}
+
+.pagination_div {
+
+    text-align: center;
+}
+        .flex_grid {
+
+            min-height: 80vh;
+            align-items: center;
+            background-color: #e9ecef;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+
+        }
+        .vertical-center {
+            align-items: center;
+            background-color: #e9ecef;
+
+        }
+
+        .login-form {
+            background: white;
+            padding: 50px;
+            padding-top: 20px;
+        }
+
+       .login-form > span {
+            margin-bottom: 20px;
+            display: block;
+            font-size: x-large;
+            font-weight: 500;
+            color: darkslategray;
+        }
+
+        .login-form > button {
+            width: 100%;
+            margin-top: 20px;
+        }
+
+        .header {
+            padding-left: 2em;
+            padding-top: 2em;
+        }
+
+        .header > img {
+            height: 50px
+        }
+
+        .header > span {
+            font-size: 1.5em;
+            font-weight: 500;
+            padding-left: 5px;
+            margin-top: 5px;
+            vertical-align: middle;
+        }
+
+       .main-nav > a > span {
+            font-size: 1.2em;
+            font-weight: 500;
+            padding-left: 5px;
+            padding-top: 5px;
+            display: inline-flex;
+        }
+
+        .footer {
+            margin-top: 2em;
+            padding-bottom: 2em;
+            margin-left: auto;
+            margin-right: auto;
+            width: 25em;
+        }
+
+</style>
+<title>Virtual Lab</title>
+</head>
+
+<body>
+    <nav class="navbar  main-nav navbar-light ">
+        <a class="navbar-brand" href="#">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/31/AT%26T_logo_2016.svg/1600px-AT%26T_logo_2016.svg.png" 
+             height="50" class="d-inline-block align-top" alt="">
+                        <span>Virtual Lab</span>
+
+        </a>
+    </nav>
+<br><br>
+<ul style="list-style-type:disc;">
+  <li> Disk size: {{ details_dict['Disk size'] }}</li>
+  <li> Vcpus: {{ details_dict['Vcpus'] }}</li>
+  <li> RAM: {{ details_dict['RAM'] }}</li>
+</ul>
+</body>
+
+</html>

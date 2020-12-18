@@ -1,0 +1,62 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{vm_name}}
+  labels:
+    vm: {{vm_name}}
+    created-by: {{creator_name}}
+    virtlet: enabled
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      vm: {{vm_name}}
+  template:
+    metadata:
+      name: {{vm_name}}
+      #generateName: {{vm_name}}-
+      labels:
+        vm: {{vm_name}}
+        virtlet: enabled
+        created-by: {{creator_name}}
+      annotations:
+        kubernetes.io/target-runtime: virtlet.cloud
+        VirtletVCPUCount: "{{vcpu}}"
+        VirtletCloudInitUserData: |
+          ssh_pwauth: True
+          users:
+          - name: {{ login_name }}
+            gecos: User
+            primary-group: testuser
+            groups: users
+            lock_passwd: false
+            shell: /bin/bash
+            sudo: ALL=(ALL) NOPASSWD:ALL
+            passwd: "$6$rounds=4096$wPs4Hz4tfs$a8ssMnlvH.3GX88yxXKF2cKMlVULsnydoOKgkuStTErTq2dzKZiIx9R/pPWWh5JLxzoZEx7lsSX5T2jW5WISi1" 
+            ssh-authorized-keys:
+              {{ssh_key}}
+        VirtletSSHKeys: |
+          {{ssh_key}}
+        # set root volume size
+        VirtletRootVolumeSize: {{disk}}Gi
+    
+    spec:
+      nodeSelector:
+        extraRuntime: virtlet
+        {{ rack_detail }}
+    
+      # This is the number of seconds Virtlet gives the VM to shut down cleanly.
+      # The default value of 30 seconds is ok for containers but probably too
+      # low for VM, so overriding it here is strongly advised.
+      terminationGracePeriodSeconds: 120
+      containers:
+      - name: {{vm_name}}-nodeport
+        image: virtlet.cloud/{{image}}
+        imagePullPolicy: IfNotPresent
+        # tty and stdin required for `kubectl attach -t` to work
+        tty: true
+        stdin: true
+        resources:
+          limits:
+            memory: {{ram}}Mi
+            

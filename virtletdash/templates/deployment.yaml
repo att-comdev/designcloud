@@ -1,0 +1,94 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "virtletdash.fullname" . }}
+  labels:
+{{ include "virtletdash.labels" . | indent 4 }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: {{ include "virtletdash.name" . }}
+      app.kubernetes.io/instance: {{ .Release.Name }}
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: {{ include "virtletdash.name" . }}
+        app.kubernetes.io/instance: {{ .Release.Name }}
+    spec:
+      serviceAccountName: virtlet-dash
+      hostAliases:
+      - ip: "135.21.35.74"
+        hostnames:
+        - "dex.example.com"
+      containers:
+        - name: {{ .Chart.Name }}
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          env:          
+            - name: "NO_PROXY"
+              value: {{ .Values.NO_PROXY }}
+            - name: "no_proxy"
+              value: {{ .Values.NO_PROXY }}
+            - name: "OIDC_REDIRECT_ENDPOINT"
+              value: {{ .Values.OIDC_REDIRECT_ENDPOINT }}
+            - name: "SERVER"
+              value: {{ .Values.SERVER }}
+            - name: "ALLOWED_RAM"
+              value: {{ .Values.ALLOWED_RAM  | quote }}
+            - name: "ALLOWED_CPU"
+              value: {{ .Values.ALLOWED_CPU | quote }}
+            - name: "ALLOWED_DISK"
+              value: {{ .Values.ALLOWED_DISK | quote }}
+            - name: "PERMITTED_RAM_ADMIN"
+              value: {{ .Values.PERMITTED_RAM_ADMIN | quote }}
+            - name: "PERMITTED_RAM_USER"
+              value: {{ .Values.PERMITTED_RAM_USER | quote }}
+            - name: "ISSUER_URL"
+              value: {{ .Values.ISSUER_URL }}
+            - name: "RESOURCE_CONFIG"
+              value: {{ .Values.RESOURCE_CONFIG }}
+            - name: "TOKEN"
+              value: {{ .Values.TOKEN }}
+            - name: "SECRET_KEY"
+              value: {{ .Values.SECRET_KEY }}
+            - name: "REQUESTS_CA_BUNDLE"
+              valueFrom:
+                secretKeyRef:
+                  key:  requests-ca-bundle
+                  name: {{ .Release.Name }}-auth
+            - name: "DOMAIN_NAME"
+              valueFrom:
+                secretKeyRef:
+                  key:  domain-name
+                  name: {{ .Release.Name }}-auth
+            - name: "PREFERRED_URL_SCHEME"
+              valueFrom:
+                secretKeyRef:
+                  key:  preferred-url-scheme
+                  name: {{ .Release.Name }}-auth
+            - name: "DEX_CLIENT_ID"
+              valueFrom:
+                secretKeyRef:
+                  key:  dex-client-id
+                  name: {{ .Release.Name }}-auth
+            - name: "DEX_CLIENT_SECRET"
+              valueFrom:
+                secretKeyRef:
+                  key:  dex-client-secret
+                  name: {{ .Release.Name }}-auth
+
+          ports:
+            - name: virtport
+              containerPort: 5000
+              protocol: TCP
+          volumeMounts:
+          - mountPath: /test-pd
+            name: test-volume
+      volumes:
+      - name: test-volume
+        hostPath:
+       # directory location on host
+          path: /tmp/dummy
+       # this field is optional
+          type: Directory
