@@ -1,0 +1,75 @@
+apiVersion: v1
+data:
+  config.yaml: |
+    issuer: https://dex.example.com:32000
+    storage:
+      type: kubernetes
+      config:
+        inCluster: true
+    web:
+      https: 0.0.0.0:5556
+      tlsCert: /etc/dex/tls/tls.crt
+      tlsKey: /etc/dex/tls/tls.key
+    connectors:
+    - type: ldap
+      id: ldap
+      name: LDAP
+      config:
+        host: localhost:389
+        insecureSkipVerify: true
+        bindDN: cn=admin,dc=example,dc=org
+        bindPW: admin
+        usernamePrompt: ID
+        userSearch:
+          baseDN: ou=People,dc=example,dc=org
+          filter: "(objectClass=user)"
+          username: cn
+          idAttr: DN
+          emailAttr: mail
+          nameAttr: givenName
+        groupSearch:
+          baseDN: ou=Groups,dc=example,dc=org
+          userAttr: DN
+          groupAttr: member
+          nameAttr: name
+    oauth2:
+      skipApprovalScreen: true
+
+    staticClients:
+    - id: example-app
+      redirectURIs:
+      - 'http://185.11.35.40:5000/login_callback'
+      name: 'Example App'
+      secret: ZXhhbXBsZS1hcHAtc2VjcmV0
+    - id: virtlet-app
+      redirectURIs:
+      - 'https://design-cloud.com/login_callback'
+      name: 'Virtlet App'
+      secret: ZXhhbXBsZS1hcHAtc2VjcmV1
+    - id: example-app1
+      redirectURIs:
+      - 'http://design-cloud.local/login_callback'
+      name: 'Example App1'
+      secret: ZXhhbXBsZS1hcHAtc2VjcmV2
+    - id: example-app2
+      redirectURIs:
+      - 'http://design-cloud.local:5000/login_callback'
+      name: 'Example App2'
+      secret: ZXhhbXBsZS1hcHAtc2VjcmV3
+    - id: k8s-dex-auth
+      redirectURIs:
+      - 'https://dex.example.com:5555/callback/example-cluster'
+      name: 'k8s Dex Authenticator'
+      secret: ZXhhbXBsZS1hcHAtc2VjcmV4
+
+    enablePasswordDB: true
+    staticPasswords:
+    - email: "admin@example.com"
+      # bcrypt hash of the string "password"
+      hash: "$2a$10$2b2cU8CPhOTaGrs1HRQuAueS7JTT5ZHsHSzYiFPm1leZck7Mc8T4W"
+      username: "admin"
+      userID: "08a8684b-db88-4b73-90a9-3cd1661f5466"
+kind: ConfigMap
+metadata:
+  name: dex
+  namespace: default

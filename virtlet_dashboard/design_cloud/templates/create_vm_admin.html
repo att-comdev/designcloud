@@ -1,0 +1,153 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <style type="text/css">
+        .vertical-center {
+            min-height: 100vh;
+            align-items: center;
+            display: flex;
+            background-color: #e9ecef;
+        }
+        
+        .vm-create-form {
+            background: white;
+            padding: 40px;
+            padding-top: 20px;
+        }
+        
+        .vm-create-form > button {
+            width: 40%;
+            margin-top: 20px;
+            margin-left: 7%;
+        }
+        
+        .header {
+            background-color: #e9ecef;
+            padding-left: 2em;
+            position: absolute;
+            top: 2em;
+        }
+        
+        .header > img {
+            height: 50px
+        }
+        
+        .header > span {
+            font-size: 1.5em;
+            font-weight: 500;
+            padding-left: 5px;
+            margin-top: 5px;
+            vertical-align: middle;
+        }
+        
+        .footer {
+            position: absolute;
+            bottom: 2em;
+            left: 2em;
+        }
+    </style>
+    <title>Virtual Lab</title>
+</head>
+
+<body>
+
+    <div class=" vertical-center">
+        <div class=" header">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/31/AT%26T_logo_2016.svg/1600px-AT%26T_logo_2016.svg.png">
+            <span>Virtual Lab</span>
+        </div>
+
+        <div class="container">
+            <div class="row ">
+
+                <form class="vm-create-form offset-3 col-6" action="/create_vm" method="post" id>
+                    <div class="form-group">
+                        <label for="exampleInputEmail1">VM Name</label>
+                        <input type="text" class="form-control" aria-describedby="vmnamelHelp" name="vm_name" placeholder="VM Name">
+                        <small id="vmnameHelp" class="form-text text-muted">Alphanumeric VM name. eg: myvm123 </small>
+                    </div>
+                    <div class="form-row form-group">
+                        <div class="col">
+                            <input type="text" class="form-control" aria-describedby="disklHelp" placeholder="Disk size in GB " name="disk">
+                            <small id="diskHelp" class="form-text text-muted">Disk size in GB. eg: 20 </small>
+
+                        </div>
+                        <div class="col">
+                            <input type="text" class="form-control" id="exampleInputPassword1" placeholder="CPU" name="vcpu">
+                        </div>
+                        <div class="col">
+                            <input type="text" class="form-control" id="exampleInputPassword1" placeholder="RAM in MB" name="ram">
+                        </div>
+                        <div class="col">
+                            <input type="text" class="form-control" id="exampleInputPassword1" placeholder="User Name" name="user_name">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="exampleInputEmail1">SSH key(s)</label>
+                        <input type="text" class="form-control" name="ssh_key" aria-describedby="sshkeylHelp" placeholder="SSH public Key(s)">
+                        <small id="sshkeylHelp" class="form-text text-muted">SSH public Key(s) </small>
+                    </div>
+                    <div class="form-row form-group">
+                        <div class="col">
+                            <label for="inputImage">Image</label>
+                            <select id="inputImage" name="image" class="form-control">
+                                <option value="ubuntu">ubuntu</option>
+                                <option value="Image 2">Image 2</option>
+                                <option value="Image 3">Image 3</option>
+                                <option value="Image 4">Image 4</option>
+                            </select>
+                        </div>
+                        <div class="col">
+
+                            <label for="inputNoOfVms">No of Vms</label>
+                            <select id="inputNoOfVms" name="count" class="form-control">
+                                <option value="1">1</option>
+                                <option value="2">2</option>
+                                <option value="3">3</option>
+                                <option value="4">4</option>
+
+                            </select>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary">Create VM</button>
+                    <button id="cancelBtn" onclick="cancel_vm_create(event)" class="btn btn-secondary">Cancel</button>
+
+                </form>
+
+            </div>
+
+        </div>
+
+        <div class="footer row">
+            <footer>© 2019 AT&T Intellectual Property. All rights reserved.</footer>
+        </div>
+    </div>
+    <script type="text/javascript">
+        
+        function cancel_vm_create(event) {
+            console.log(event)
+
+            window.location.replace('/list_vms')
+            event.preventDefault()
+            return false;
+
+        }
+
+    </script>
+
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+</body>
+
+</html>

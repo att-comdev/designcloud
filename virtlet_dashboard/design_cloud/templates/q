@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+.button {
+  background-color: #4CAF50; /* Green */
+  border: none;
+  color: white;
+  padding: 15px 32px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 4px 2px;
+  cursor: pointer;
+}
+
+.button2 {background-color: #008CBA;}
+.button3 {background-color: #f44336;font-size: 12px;}
+table {
+  width:100%;
+}
+table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}
+th, td {
+  padding: 15px;
+  text-align: left;
+}
+table#t01 tr:nth-child(even) {
+  background-color: #eee;
+}
+table#t01 tr:nth-child(odd) {
+ background-color: #fff;
+}
+table#t01 th {
+  background-color: black;
+  color: white;
+}
+</style>
+</head>
+<body>
+
+<h2>Instance Details</h2>
+<p align="right">
+  <button class="button button2" onclick="window.location.href = 'http://135.21.35.18/create_vm';">Launch Instance</button>
+</p>
+<table id="t01">
+<tr>
+    <th>Instance Name</th>
+    <th>Login Command</th> 
+    <th></th>
+</tr>
+{% for item in vm_list %}
+    <tr>
+    <td>{{ item['vm_name'] }} </td>
+    <td>{{ item['login_command'] }} </td>
+    <td> <button class="button button3" onclick="window.location.href = 'http://135.21.35.18/delete_vm?{{ item['vm_name'] }}';">Delete Instance</button> </td>
+    </tr>
+{% endfor %}
+</table>
+</body>
+</html>
+

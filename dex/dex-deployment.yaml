@@ -1,0 +1,57 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: dex
+  name: dex
+  namespace: default
+spec:
+  selector:
+    matchLabels:
+      app: dex
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: dex
+    spec:
+      serviceAccount: dex
+      serviceAccountName: dex
+      containers:
+      - command:
+        - /usr/local/bin/dex
+        - serve
+        - /etc/dex/cfg/config.yaml
+        image: dex
+        imagePullPolicy: IfNotPresent
+        name: dex
+        ports:
+        - containerPort: 5556
+          name: https
+          protocol: TCP
+        volumeMounts:
+        - mountPath: /etc/dex/cfg
+          name: config
+        - mountPath: /etc/dex/tls
+          name: tls
+        - mountPath: /var/run/secrets/kubernetes.io/serviceaccount
+          name: dex-token-g8982
+          readOnly: true
+      nodeSelector:
+        name: dex
+      volumes:
+      - configMap:
+          defaultMode: 420
+          items:
+          - key: config.yaml
+            path: config.yaml
+          name: dex
+        name: config
+      - name: tls
+        secret:
+          defaultMode: 420
+          secretName: dex.example.com.tls
+      - name: dex-token-g8982
+        secret:
+          defaultMode: 420
+          secretName: dex-token-g8982
