@@ -18,7 +18,7 @@ Jinja2==2.10.1
 keyring==10.6.0
 keyrings.alt==3.0
 kubernetes==10.0.1
-Mako==1.1.0
+Mako==1.2.2
 MarkupSafe==1.1.1
 oauthlib==3.1.0
 oic==1.2.1
